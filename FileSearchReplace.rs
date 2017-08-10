@@ -1,35 +1,44 @@
-use std::os;
-use std::io::File;
+use std::env;
+use std::fs::File;
+use std::io::{self, Read, Write};
+use std::path::Path;
 
 fn main() {
-    // Extract words and file path from command line args
-    let args = os::args();
-    if args.len() != 4 {
+    // Handle errors
+    run().unwrap();
+}
+
+fn run() -> Result<(), io::Error> {
+    // Extract words and file path from the command line args
+    let args: Vec<String> = env::args().skip(1).collect();
+    if args.len() != 3 {
         println!("Wrong number of arguments");
-        return;
+        return Ok(());
     }
 
-    let mut args = args.into_iter().skip(1);
+    let word_from = &args[0];
+    // If the source word is empty then there is nothing to replace
+    if word_from.is_empty() { return Ok(()); }  
 
-    let word_from = args.next().unwrap();
-    // If source word is empty then there is nothing to replace
-    if word_from.is_empty() { return; }  
+    let word_to = &args[1];
 
-    let word_to = args.next().unwrap();
-
-    let file = Path::new(args.next().unwrap());
+    let file_name = &args[2];
+    let file_path = Path::new(&file_name);
 
     // Open and read the file entirely
-    let mut src = File::open(&file).unwrap();
-    let data = src.read_to_string().unwrap();
+    let mut src = File::open(&file_path)?;
+    let mut data = String::new();
+    src.read_to_string(&mut data)?;
     drop(src);  // Close the file early
 
-    // Run replace operation in memory
+    // Run the replace operation in memory
     let new_data = data.replace(&*word_from, &*word_to);
 
     // Recreate the file and dump the processed contents to it
-    let mut dst = File::create(&file).unwrap();
-    dst.write_str(&*new_data).unwrap();
+    let mut dst = File::create(&file_path)?;
+    dst.write(new_data.as_bytes())?;
 
     println!("done");
+
+    Ok(())
 }
