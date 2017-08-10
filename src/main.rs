@@ -18,7 +18,7 @@ fn run() -> Result<(), io::Error> {
 
     let word_from = &args[0];
     // If the source word is empty then there is nothing to replace
-    if word_from.is_empty() { return Ok(()); }  
+    if word_from.is_empty() { return Ok(()); }
 
     let word_to = &args[1];
 
@@ -42,3 +42,4 @@ fn run() -> Result<(), io::Error> {
 
     Ok(())
 }
+

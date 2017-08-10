@@ -1,0 +1,6 @@
+[package]
+name = "Rust-File-Test"
+version = "0.1.0"
+authors = ["Chris Woollard <cwoollard@gmail.com>"]
+
+[dependencies]
