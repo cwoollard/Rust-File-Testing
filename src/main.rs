@@ -1,3 +1,8 @@
+// This code came from Stackoverflow which is covered by an MIT License.
+// Written by: Vladimir Matveev https://stackoverflow.com/users/788207/vladimir-matveev
+// https://stackoverflow.com/questions/27215396/how-to-replace-a-word-in-a-file-in-a-txt/27218171?noredirect=1#comment78149771_27218171
+
+
 use std::env;
 use std::fs::File;
 use std::io::{self, Read, Write};
